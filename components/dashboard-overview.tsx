@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -18,8 +18,75 @@ import {
   Target,
 } from "lucide-react"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+
+// Helper function to get days in a month
+const getDaysInMonth = (month: number, year: number) => {
+  return new Date(year, month + 1, 0).getDate()
+}
+
+// Helper function to get the starting day of the month
+const getStartDayOfMonth = (month: number, year: number) => {
+  return new Date(year, month, 1).getDay()
+}
 
 export function DashboardOverview() {
+  const [currentDate, setCurrentDate] = useState(new Date())
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ]
+
+  const currentMonth = currentDate.getMonth()
+  const currentYear = currentDate.getFullYear()
+  const today = currentDate.getDate()
+
+  const daysInMonth = getDaysInMonth(currentMonth, currentYear)
+  const startDay = getStartDayOfMonth(currentMonth, currentYear)
+
+  const calendarDays = Array.from({ length: startDay }, (_, i) => (
+    <div key={`empty-${i}`} className="text-center text-xs sm:text-sm text-gray-400"></div>
+  ))
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    calendarDays.push(
+      <div
+        key={day}
+        className={`text-center text-xs sm:text-sm ${day === today ? "font-bold text-gray-900" : "text-gray-600"}`}
+      >
+        {day}
+      </div>
+    )
+  }
+
+  const todayEvents = [
+    {
+      title: "Staff Meeting",
+      description: "Discuss weekly progress",
+      avatars: ["bg-purple-400", "bg-violet-400", "bg-pink-400"],
+      bgColor: "bg-gray-900",
+      textColor: "text-white",
+    },
+    {
+      title: "Supplier Delivery",
+      description: "Fresh ingredients arrival",
+      avatars: ["bg-blue-400", "bg-green-400"],
+      bgColor: "bg-purple-50",
+      textColor: "text-gray-900",
+    },
+  ]
+
   return (
     <div className="container-responsive space-y-8">
       <div className="space-y-6">
@@ -201,9 +268,9 @@ export function DashboardOverview() {
               <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
                 <CardTitle className="text-base sm:text-lg">Today's Schedule</CardTitle>
                 <div className="flex space-x-2 text-xs sm:text-sm text-gray-600">
-                  <span>August</span>
-                  <span className="font-medium">September 2024</span>
-                  <span>October</span>
+                  <span>{monthNames[(currentMonth - 1 + 12) % 12]}</span>
+                  <span className="font-medium">{`${monthNames[currentMonth]} ${currentYear}`}</span>
+                  <span>{monthNames[(currentMonth + 1) % 12]}</span>
                 </div>
               </div>
               <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
@@ -212,43 +279,36 @@ export function DashboardOverview() {
           <CardContent>
             <div className="space-y-3">
               <div className="grid grid-cols-7 gap-1 sm:gap-2 text-center text-xs sm:text-sm text-gray-600 mb-4">
+                <div>Sun</div>
                 <div>Mon</div>
                 <div>Tue</div>
                 <div>Wed</div>
                 <div>Thu</div>
                 <div>Fri</div>
                 <div>Sat</div>
-                <div>Sun</div>
-                <div>22</div>
-                <div>23</div>
-                <div>24</div>
-                <div className="font-bold text-gray-900">25</div>
-                <div>26</div>
-                <div>27</div>
-                <div>28</div>
+                {calendarDays}
               </div>
               <div className="space-y-2">
-                <div className="flex items-center justify-between p-3 bg-gray-900 text-white rounded-lg">
-                  <div>
-                    <div className="font-medium text-xs sm:text-sm">Staff Meeting</div>
-                    <div className="text-xs text-gray-300">Discuss weekly progress</div>
-                  </div>
-                  <div className="flex -space-x-2">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 bg-purple-400 rounded-full border-2 border-white" />
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 bg-violet-400 rounded-full border-2 border-white" />
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 bg-pink-400 rounded-full border-2 border-white" />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                  <div>
-                    <div className="font-medium text-xs sm:text-sm text-gray-900">Supplier Delivery</div>
-                    <div className="text-xs text-gray-600">Fresh ingredients arrival</div>
-                  </div>
-                  <div className="flex -space-x-2">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-400 rounded-full border-2 border-white" />
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 bg-green-400 rounded-full border-2 border-white" />
-                  </div>
-                </div>
+                {todayEvents.length > 0 ? (
+                  todayEvents.map((event, i) => (
+                    <div key={i} className={`flex items-center justify-between p-3 ${event.bgColor} rounded-lg`}>
+                      <div>
+                        <div className={`font-medium text-xs sm:text-sm ${event.textColor}`}>{event.title}</div>
+                        <div className={`text-xs ${event.textColor} opacity-80`}>{event.description}</div>
+                      </div>
+                      <div className="flex -space-x-2">
+                        {event.avatars.map((avatar, j) => (
+                          <div
+                            key={j}
+                            className={`w-5 h-5 sm:w-6 sm:h-6 ${avatar} rounded-full border-2 border-white`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center text-gray-500 py-4">No events scheduled for today.</div>
+                )}
               </div>
             </div>
           </CardContent>
@@ -264,19 +324,19 @@ export function DashboardOverview() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <Link href="/menu">
+            <Link href="/menu" passHref>
               <Button className="w-full justify-start bg-transparent hover:bg-purple-50" variant="outline">
                 <ChefHat className="mr-2 h-4 w-4" />
                 Update Menu
               </Button>
             </Link>
-            <Link href="/analytics">
+            <Link href="/analytics" passHref>
               <Button className="w-full justify-start bg-transparent hover:bg-purple-50" variant="outline">
                 <BarChart3 className="mr-2 h-4 w-4" />
                 View Reports
               </Button>
             </Link>
-            <Link href="/ai-chat">
+            <Link href="/ai-chat" passHref>
               <Button className="w-full justify-start bg-transparent hover:bg-purple-50" variant="outline">
                 <MessageSquare className="mr-2 h-4 w-4" />
                 Ask AI Assistant
@@ -287,7 +347,7 @@ export function DashboardOverview() {
 
         <Card className="border-0 shadow-soft">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <CardTitle className="flex items-center gap-2 text-base sm:tsext-lg">
               <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
               Alerts
             </CardTitle>

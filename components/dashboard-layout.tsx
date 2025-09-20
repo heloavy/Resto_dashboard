@@ -58,13 +58,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
+    <div className="min-h-screen bg-gray-100">
       <header className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center">
-              <div className="bg-gradient-to-r from-purple-800 to-indigo-800 text-white px-4 py-2 rounded-full flex items-center space-x-2 shadow-sm">
+              <div className="bg-black text-white px-4 py-2 rounded-full flex items-center space-x-2 shadow-sm">
                 <UtensilsCrossed className="h-5 w-5" />
                 <span className="font-semibold text-sm">RestaurantOS</span>
               </div>
@@ -79,8 +79,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   className={cn(
                     "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center space-x-2",
                     isActive(item.href)
-                      ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-purple-50",
+                      ? "bg-black text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-200",
                   )}
                 >
                   <item.icon className="h-4 w-4" />
@@ -93,7 +93,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <div className="flex items-center space-x-3">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="relative p-2 rounded-full hover:bg-purple-50">
+                  <Button variant="ghost" size="sm" className="relative p-2 rounded-full hover:bg-gray-200">
                     <Bell className="h-5 w-5 text-gray-600" />
                     {notifications.length > 0 && (
                       <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
@@ -116,7 +116,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" className="p-0">
-                    <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center hover:shadow-md transition-shadow">
+                    <div className="h-8 w-8 rounded-full bg-black flex items-center justify-center hover:shadow-md transition-shadow">
                       <User className="h-4 w-4 text-white" />
                     </div>
                   </Button>
@@ -144,14 +144,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
               <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="sm" className="lg:hidden p-2 rounded-full hover:bg-purple-50">
+                  <Button variant="ghost" size="sm" className="lg:hidden p-2 rounded-full hover:bg-gray-200">
                     <Menu className="h-5 w-5 text-gray-600" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="w-80">
                   <SheetHeader>
                     <SheetTitle className="flex items-center space-x-2">
-                      <UtensilsCrossed className="h-5 w-5 text-purple-600" />
+                      <UtensilsCrossed className="h-5 w-5 text-black" />
                       <span>RestaurantOS</span>
                     </SheetTitle>
                   </SheetHeader>
@@ -164,8 +164,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                         className={cn(
                           "flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200",
                           isActive(item.href)
-                            ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm"
-                            : "text-gray-600 hover:text-gray-900 hover:bg-purple-50",
+                            ? "bg-black text-white shadow-sm"
+                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-200",
                         )}
                       >
                         <item.icon className="h-5 w-5" />

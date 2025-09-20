@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,8 +8,15 @@ import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { User, Bell, Shield, Database, Palette } from "lucide-react"
+import { useTheme } from "next-themes"
 
 export function SettingsPage() {
+  const { theme, setTheme } = useTheme()
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark")
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -187,7 +194,7 @@ export function SettingsPage() {
                     <h4 className="font-medium">Dark Mode</h4>
                     <p className="text-sm text-muted-foreground">Switch to dark theme</p>
                   </div>
-                  <Switch />
+                  <Switch checked={theme === 'dark'} onCheckedChange={toggleTheme} />
                 </div>
               </div>
             </CardContent>
