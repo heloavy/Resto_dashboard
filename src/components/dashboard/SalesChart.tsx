@@ -57,7 +57,7 @@ export function SalesChart() {
                 content={<ChartTooltipContent
                   formatter={(value, name) => (
                     <div className="flex items-center">
-                      <div className={`h-2.5 w-2.5 rounded-full mr-2 bg-${name === 'predicted' ? 'primary' : 'chart-3'}`}/>
+                      <div className={`h-2.5 w-2.5 rounded-full mr-2 ${name === 'predicted' ? 'bg-primary' : 'bg-chart-3'}`}/>
                       <div className="flex justify-between w-full items-center">
                         <span className="capitalize">{chartConfig[name as keyof typeof chartConfig].label}:</span>
                         <span className="ml-4 font-bold text-foreground">${(value as number).toLocaleString()}</span>
