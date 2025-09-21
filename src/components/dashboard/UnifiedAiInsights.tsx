@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getUnifiedDashboardInsights, type UnifiedDashboardOutput } from "@/ai/flows/unified-dashboard-insights";
+import { type UnifiedDashboardOutput } from "@/ai/flows/unified-dashboard-insights";
 import { inventoryDataForAlerts, menuItems } from "@/lib/mock-data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -9,6 +9,58 @@ import { Badge } from "@/components/ui/badge";
 import { Lightbulb, TriangleAlert, Trophy, ShoppingCart, Package } from "lucide-react";
 import Image from "next/image";
 import { Skeleton } from '@/components/ui/skeleton';
+
+const mockInsights: UnifiedDashboardOutput = {
+    menuSuggestions: [
+      {
+        item: 'Cappuccino',
+        suggestionType: 'price_adjustment',
+        details: 'High sales volume suggests a small price increase could boost profitability without impacting demand.',
+      },
+      {
+        item: 'Avocado Toast',
+        suggestionType: 'promotion',
+        details: 'Sales are moderate. Consider a "combo" offer with a coffee to increase sales.',
+      },
+    ],
+    inventoryAlerts: [
+      {
+        itemName: 'Coffee Beans',
+        currentStock: 8,
+        unit: 'kg',
+        reorderQuantity: 10,
+        reason: 'Stock is below reorder point of 10kg. Reordering now prevents a potential shortage during peak hours.',
+      },
+      {
+        itemName: 'Avocado',
+        currentStock: 5,
+        unit: 'kg',
+        reorderQuantity: 5,
+        reason: 'Nearing the reorder point of 8kg. Demand is consistent, better to restock soon.',
+      },
+    ],
+    topMenuItems: [
+      {
+        name: 'Croissant',
+        sales: 200,
+        imageUrl: 'https://picsum.photos/seed/102/200/200',
+        imageHint: 'croissant pastry',
+      },
+      {
+        name: 'Cappuccino',
+        sales: 150,
+        imageUrl: 'https://picsum.photos/seed/101/200/200',
+        imageHint: 'cappuccino coffee',
+      },
+      {
+        name: 'Cheeseburger',
+        sales: 120,
+        imageUrl: 'https://picsum.photos/seed/104/200/200',
+        imageHint: 'cheeseburger fries',
+      },
+    ],
+};
+
 
 const getSuggestionBadgeVariant = (suggestionType: string) => {
     switch (suggestionType) {
@@ -42,14 +94,12 @@ export function UnifiedAiInsights() {
     async function fetchInsights() {
       try {
         setIsLoading(true);
-        const result = await getUnifiedDashboardInsights({
-          menuData: JSON.stringify(menuItems),
-          inventoryData: JSON.stringify(inventoryDataForAlerts.inventoryItems),
-        });
-        setInsights(result);
+        // Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setInsights(mockInsights);
       } catch (e: any) {
-        console.error("Failed to fetch AI insights:", e);
-        setError("Failed to load AI insights. You may have exceeded the API rate limit.");
+        console.error("Failed to load insights:", e);
+        setError("Failed to load insights. Please try again later.");
       } finally {
         setIsLoading(false);
       }
