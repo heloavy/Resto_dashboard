@@ -74,12 +74,12 @@ export function SalesChart() {
               <Tooltip
                 cursor={{ fill: 'hsla(var(--primary) / 0.1)' }}
                 content={<ChartTooltipContent
-                  formatter={(value: number, name: 'historical' | 'predicted') => (
+                  formatter={(value, name) => (
                     <div className="flex items-center">
                       <div className={`h-2.5 w-2.5 rounded-full mr-2 ${name === 'predicted' ? 'bg-primary' : 'bg-chart-3'}`}/>
                       <div className="flex justify-between w-full items-center">
-                        <span className="capitalize">{chartConfig[name].label}:</span>
-                        <span className="ml-4 font-bold text-foreground">${value.toLocaleString()}</span>
+                        <span className="capitalize">{chartConfig[name as 'historical' | 'predicted'].label}:</span>
+                        <span className="ml-4 font-bold text-foreground">${(value as number).toLocaleString()}</span>
                       </div>
                     </div>
                   )}
