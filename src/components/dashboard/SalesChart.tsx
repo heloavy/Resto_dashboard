@@ -1,10 +1,29 @@
-"use client";
+'use client';
 
+import React from 'react';
 import { Area, Bar, CartesianGrid, ComposedChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
-import { salesData } from "@/lib/mock-data";
-import { TrendingUp } from "lucide-react";
+
+const salesData = [
+  { month: "Jan", historical: 18600, predicted: 22000 },
+  { month: "Feb", historical: 30500, predicted: 29000 },
+  { month: "Mar", historical: 23700, predicted: 25000 },
+  { month: "Apr", historical: 27300, predicted: 28000 },
+  { month: "May", historical: 20900, predicted: 24000 },
+  { month: "Jun", historical: 21400, predicted: 23000 },
+  { month: "Jul", historical: null, predicted: 31000 },
+  { month: "Aug", historical: null, predicted: 33000 },
+  { month: "Sep", historical: null, predicted: 35000 },
+];
+
+const TrendingUp = ({ className }: { className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+    <polyline points="16 7 22 7 22 13"></polyline>
+  </svg>
+);
+
 
 const chartConfig = {
   historical: {
@@ -55,18 +74,19 @@ export function SalesChart() {
               <Tooltip
                 cursor={{ fill: 'hsla(var(--primary) / 0.1)' }}
                 content={<ChartTooltipContent
-                  formatter={(value, name) => (
+                  formatter={(value: number, name: 'historical' | 'predicted') => (
                     <div className="flex items-center">
                       <div className={`h-2.5 w-2.5 rounded-full mr-2 ${name === 'predicted' ? 'bg-primary' : 'bg-chart-3'}`}/>
                       <div className="flex justify-between w-full items-center">
-                        <span className="capitalize">{chartConfig[name as keyof typeof chartConfig].label}:</span>
-                        <span className="ml-4 font-bold text-foreground">${(value as number).toLocaleString()}</span>
+                        <span className="capitalize">{chartConfig[name].label}:</span>
+                        <span className="ml-4 font-bold text-foreground">${value.toLocaleString()}</span>
                       </div>
                     </div>
                   )}
-                 labelClassName="text-lg font-bold text-primary"
-                 wrapperStyle={{ background: 'hsl(var(--card) / 0.9)', border: '1px solid hsl(var(--border) / 0.5)', borderRadius: 'var(--radius)', backdropFilter: 'blur(4px)' }}
-              />}
+                  labelClassName="text-lg font-bold text-primary"
+                  wrapperStyle={{ background: 'hsl(var(--card) / 0.9)', border: '1px solid hsl(var(--border) / 0.5)', borderRadius: '0.5rem', backdropFilter: 'blur(4px)' }}
+                />}
+              />
               <Bar dataKey="historical" fill="hsl(var(--chart-3))" radius={[4, 4, 0, 0]} barSize={30} />
               <Area type="monotone" dataKey="predicted" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorPredicted)" strokeWidth={2} />
             </ComposedChart>
