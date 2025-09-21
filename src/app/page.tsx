@@ -1,8 +1,8 @@
 import { AiChat } from '@/components/dashboard/AiChat';
-import { InventoryAlerts } from '@/components/dashboard/InventoryAlerts';
-import { MenuOptimization } from '@/components/dashboard/MenuOptimization';
+import { InventoryAlertsLoader } from '@/components/dashboard/InventoryAlertsLoader';
+import { MenuOptimizationLoader } from '@/components/dashboard/MenuOptimizationLoader';
 import { SalesChartLoader } from '@/components/dashboard/SalesChartLoader';
-import { TopMenuItems } from '@/components/dashboard/TopMenuItems';
+import { TopMenuItemsLoader } from '@/components/dashboard/TopMenuItemsLoader';
 
 export default function Home() {
   return (
@@ -26,15 +26,15 @@ export default function Home() {
         </div>
         
         <div className="md:col-span-1 xl:col-span-1">
-          <InventoryAlerts />
+          <InventoryAlertsLoader />
         </div>
 
         <div className="md:col-span-1 xl:col-span-1">
-          <TopMenuItems />
+          <TopMenuItemsLoader />
         </div>
         
         <div className="md:col-span-2 xl:col-span-3">
-          <MenuOptimization />
+          <MenuOptimizationLoader />
         </div>
       </div>
     </div>
