@@ -1,6 +1,6 @@
 import { menuItems, MenuItem } from "@/lib/mock-data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trophy } from "lucide-react";
+import { Trophy, Gift } from "lucide-react";
 import Image from "next/image";
 
 export function TopMenuItems() {
@@ -16,25 +16,33 @@ export function TopMenuItems() {
         <CardDescription>Your most popular items this month.</CardDescription>
       </CardHeader>
       <CardContent>
-        <ul className="space-y-4">
-          {topItems.map((item, index) => (
-            <li key={item.id} className="flex items-center gap-4 p-2 rounded-lg transition-colors hover:bg-secondary/50">
-              <div className="font-bold text-lg text-primary w-6 text-center">{index + 1}</div>
-              <Image
-                src={item.imageUrl}
-                alt={item.name}
-                width={56}
-                height={56}
-                className="rounded-md object-cover h-14 w-14 border-2 border-secondary"
-                data-ai-hint={item.imageHint}
-              />
-              <div className="flex-1">
-                <p className="font-semibold text-foreground/90">{item.name}</p>
-                <p className="text-sm text-muted-foreground">{item.sales} sold</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        {topItems && topItems.length > 0 ? (
+          <ul className="space-y-4">
+            {topItems.map((item, index) => (
+              <li key={item.id} className="flex items-center gap-4 p-2 rounded-lg transition-colors hover:bg-secondary/50">
+                <div className="font-bold text-lg text-primary w-6 text-center">{index + 1}</div>
+                <Image
+                  src={item.imageUrl}
+                  alt={item.name}
+                  width={56}
+                  height={56}
+                  className="rounded-md object-cover h-14 w-14 border-2 border-secondary"
+                  data-ai-hint={item.imageHint}
+                />
+                <div className="flex-1">
+                  <p className="font-semibold text-foreground/90">{item.name}</p>
+                  <p className="text-sm text-muted-foreground">{item.sales} sold</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="text-center text-muted-foreground py-8">
+            <Gift className="h-10 w-10 mx-auto mb-2 text-primary" />
+            <p className="font-semibold">No best-sellers yet!</p>
+            <p className="text-xs">Sales data is just getting started.</p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
