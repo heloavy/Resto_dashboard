@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { UnifiedAiInsights } from './UnifiedAiInsights';
 
@@ -14,5 +15,15 @@ function InsightsSkeleton() {
 }
 
 export function UnifiedAiInsightsLoader() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return <InsightsSkeleton />;
+  }
+
   return <UnifiedAiInsights />;
 }
