@@ -1,12 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { salesData } from "@/lib/mock-data";
-import { TrendingUp } from "lucide-react";
+import React from 'react';
 import { Area, Bar, CartesianGrid, ComposedChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ChartContainer } from '@/components/ui/chart';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartContainer } from "@/components/ui/chart";
+import { TrendingUp } from 'lucide-react';
+
+const salesData = [
+  { month: "Jan", historical: 18600, predicted: 22000 },
+  { month: "Feb", historical: 30500, predicted: 29000 },
+  { month: "Mar", historical: 23700, predicted: 25000 },
+  { month: "Apr", historical: 27300, predicted: 28000 },
+  { month: "May", historical: 20900, predicted: 24000 },
+  { month: "Jun", historical: 21400, predicted: 23000 },
+  { month: "Jul", historical: null, predicted: 31000 },
+  { month: "Aug", historical: null, predicted: 33000 },
+  { month: "Sep", historical: null, predicted: 35000 },
+];
 
 const chartConfig = {
   historical: {
@@ -20,46 +30,55 @@ const chartConfig = {
 };
 
 const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="p-3 rounded-lg shadow-lg bg-card/90 border border-border/50 text-sm backdrop-blur-sm">
-        <p className="font-bold text-foreground mb-2 text-base">{label}</p>
-        {payload.map((entry: any, index: number) => (
-          <div key={`item-${index}`} className="flex items-center">
-            <div className={`h-2.5 w-2.5 rounded-full mr-2 bg-[${entry.color}]`}/>
-            <div className="flex justify-between w-full items-center">
-              <span className="capitalize text-muted-foreground">{entry.name}:</span>
-              <span className="ml-4 font-bold text-foreground">${(entry.value as number).toLocaleString()}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
-  return null;
+    if (active && payload && payload.length) {
+      return (
+        <div className="p-3 rounded-lg shadow-lg bg-card border border-border/50 text-sm animate-in fade-in-0 zoom-in-95" style={{ background: 'hsl(var(--card) / 0.9)', border: '1px solid hsl(var(--border) / 0.5)', borderRadius: '0.5rem', backdropFilter: 'blur(4px)' }}>
+            <p className="text-lg font-bold text-primary mb-2">{label}</p>
+            {payload.map((pld: any, index: number) => {
+                const name = pld.dataKey as 'historical' | 'predicted';
+                const value = pld.value;
+                return (
+                    <div key={index} className="flex items-center">
+                        <div className={`h-2.5 w-2.5 rounded-full mr-2 ${name === 'predicted' ? 'bg-primary' : 'bg-chart-3'}`}/>
+                        <div className="flex justify-between w-full items-center">
+                            <span className="capitalize text-muted-foreground">{chartConfig[name].label}:</span>
+                            <span className="ml-4 font-bold text-foreground">${Number(value).toLocaleString()}</span>
+                        </div>
+                    </div>
+                )
+            })}
+        </div>
+      );
+    }
+  
+    return null;
 };
 
 export function SalesChart() {
-  const [isClient, setIsClient] = useState(false);
+    const [isClient, setIsClient] = React.useState(false);
+    React.useEffect(() => {
+        setIsClient(true);
+    }, []);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+    if (!isClient) {
+        return (
+            <Card className="bg-card/50 border-0 shadow-lg h-[432px] w-full">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 font-headline tracking-tight">
+                  <TrendingUp className="h-5 w-5 text-primary" />
+                  Sales Forecasting
+                </CardTitle>
+                <CardDescription>Historical vs. AI-Predicted Sales</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px] w-full flex items-center justify-center">
+                    <p className="text-muted-foreground">Loading chart...</p>
+                </div>
+              </CardContent>
+            </Card>
+        );
+    }
 
-  if (!isClient) {
-    return (
-      <Card className="bg-card/50 border-0 shadow-lg">
-        <CardHeader>
-          <Skeleton className="h-6 w-48" />
-          <Skeleton className="h-4 w-64" />
-        </CardHeader>
-        <CardContent>
-           <Skeleton className="h-[300px] w-full" />
-        </CardContent>
-      </Card>
-    );
-  }
-  
   return (
     <Card className="bg-card/50 border-0 shadow-lg">
       <CardHeader>
@@ -98,8 +117,8 @@ export function SalesChart() {
                 cursor={{ fill: 'hsla(var(--primary) / 0.1)' }}
                 content={<CustomTooltip />}
               />
-              <Bar dataKey="historical" name="Historical" fill="hsl(var(--chart-3))" radius={[4, 4, 0, 0]} barSize={30} />
-              <Area type="monotone" name="Predicted" dataKey="predicted" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorPredicted)" strokeWidth={2} />
+              <Bar dataKey="historical" fill="hsl(var(--chart-3))" radius={[4, 4, 0, 0]} barSize={30} />
+              <Area type="monotone" dataKey="predicted" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorPredicted)" strokeWidth={2} />
             </ComposedChart>
           </ResponsiveContainer>
         </ChartContainer>
