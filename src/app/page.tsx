@@ -13,18 +13,15 @@ export default function Home() {
           Here's your AI-powered overview for today.
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        
-        <div className="md:col-span-2 xl:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
           <SalesChartLoader />
         </div>
-
-        <div className="xl:row-span-2">
+        <div className="lg:row-span-2">
           <AiChat />
         </div>
-        
-        <div className="md:col-span-2 xl:col-span-3">
-           <UnifiedAiInsightsLoader />
+        <div className="lg:col-span-3">
+          <UnifiedAiInsightsLoader />
         </div>
       </div>
     </div>

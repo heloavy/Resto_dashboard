@@ -1,10 +1,14 @@
-import { getUnifiedDashboardInsights } from "@/ai/flows/unified-dashboard-insights";
+'use client';
+
+import { useEffect, useState } from 'react';
+import { getUnifiedDashboardInsights, type UnifiedDashboardOutput } from "@/ai/flows/unified-dashboard-insights";
 import { inventoryDataForAlerts, menuItems } from "@/lib/mock-data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Lightbulb, TriangleAlert, Trophy, ShoppingCart, Package } from "lucide-react";
 import Image from "next/image";
+import { Skeleton } from '@/components/ui/skeleton';
 
 const getSuggestionBadgeVariant = (suggestionType: string) => {
     switch (suggestionType) {
@@ -19,11 +23,57 @@ const getSuggestionBadgeVariant = (suggestionType: string) => {
     }
 }
 
-export async function UnifiedAiInsights() {
-  const insights = await getUnifiedDashboardInsights({
-    menuData: JSON.stringify(menuItems),
-    inventoryData: JSON.stringify(inventoryDataForAlerts.inventoryItems),
-  });
+function InsightsSkeleton() {
+    return (
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <Skeleton className="w-full h-[380px] rounded-lg" />
+            <Skeleton className="w-full h-[380px] rounded-lg" />
+            <Skeleton className="w-full h-[380px] rounded-lg" />
+        </div>
+    );
+}
+
+export function UnifiedAiInsights() {
+  const [insights, setInsights] = useState<UnifiedDashboardOutput | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchInsights() {
+      try {
+        setIsLoading(true);
+        const result = await getUnifiedDashboardInsights({
+          menuData: JSON.stringify(menuItems),
+          inventoryData: JSON.stringify(inventoryDataForAlerts.inventoryItems),
+        });
+        setInsights(result);
+      } catch (e: any) {
+        console.error("Failed to fetch AI insights:", e);
+        setError("Failed to load AI insights. You may have exceeded the API rate limit.");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchInsights();
+  }, []);
+
+  if (isLoading) {
+    return <InsightsSkeleton />;
+  }
+  
+  if (error) {
+     return (
+        <div className="text-center text-destructive bg-destructive/10 p-8 rounded-lg">
+            <TriangleAlert className="h-10 w-10 mx-auto mb-4" />
+            <p className="font-semibold">{error}</p>
+            <p className="text-sm text-destructive/80">Please check the console for more details or try again later.</p>
+        </div>
+     )
+  }
+
+  if (!insights) {
+    return null;
+  }
 
   const { menuSuggestions, inventoryAlerts, topMenuItems } = insights;
 
@@ -79,7 +129,7 @@ export async function UnifiedAiInsights() {
                 <CardDescription>Items running low that need your attention.</CardDescription>
             </CardHeader>
             <CardContent>
-                {inventoryAlerts.length > 0 ? (
+                {inventoryAlerts && inventoryAlerts.length > 0 ? (
                 <div className="space-y-4">
                     {inventoryAlerts.map((alert) => (
                     <div key={alert.itemName} className="p-4 bg-secondary/50 rounded-lg transition-all hover:bg-secondary/80">
@@ -126,7 +176,7 @@ export async function UnifiedAiInsights() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                {menuSuggestions.length > 0 ? (
+                {menuSuggestions && menuSuggestions.length > 0 ? (
                 <div className="overflow-x-auto">
                     <Table>
                     <TableHeader>
