@@ -13,20 +13,27 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
+const MarketingIdeasInputSchema = z.object({
+  todaysSpecial: z.string().describe("Today's special menu item"),
+});
+
 const MarketingIdeasOutputSchema = z.object({
   marketingIdeas: z.string().describe('Creative marketing ideas for today\'s special.'),
 });
 
 export type MarketingIdeasOutput = z.infer<typeof MarketingIdeasOutputSchema>;
 
-async function getMarketingIdeas(): Promise<MarketingIdeasOutput> {
-  return marketingIdeasFlow();
+async function getMarketingIdeas(
+  input: z.infer<typeof MarketingIdeasInputSchema>
+): Promise<MarketingIdeasOutput> {
+  return marketingIdeasFlow(input);
 }
 
 export {getMarketingIdeas};
 
 const marketingIdeasPrompt = ai.definePrompt({
   name: 'marketingIdeasPrompt',
+  input: {schema: MarketingIdeasInputSchema},
   output: {schema: MarketingIdeasOutputSchema},
   prompt: `You are a marketing expert for restaurants and cafes. Generate creative marketing ideas for today's special. Consider current trends, popular promotions, and effective strategies to attract more customers. The ideas should be engaging and actionable.
 
@@ -37,15 +44,13 @@ const marketingIdeasPrompt = ai.definePrompt({
 const marketingIdeasFlow = ai.defineFlow(
   {
     name: 'marketingIdeasFlow',
-    inputSchema: z.object({
-      todaysSpecial: z.string().optional().describe('Today\'s special menu item'),
-    }),
+    inputSchema: MarketingIdeasInputSchema,
     outputSchema: MarketingIdeasOutputSchema,
   },
   async (input) => {
     const {
       output,
-    } = await marketingIdeasPrompt(input || {todaysSpecial: 'a delicious new dish'});
+    } = await marketingIdeasPrompt(input);
     return output!;
   }
 );
