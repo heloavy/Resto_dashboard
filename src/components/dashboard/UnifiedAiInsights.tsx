@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { type UnifiedDashboardOutput } from "@/ai/flows/unified-dashboard-insights";
+import { getUnifiedDashboardInsights, type UnifiedDashboardOutput } from "@/ai/flows/unified-dashboard-insights";
 import { inventoryDataForAlerts, menuItems } from "@/lib/mock-data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -88,18 +88,20 @@ function InsightsSkeleton() {
 export function UnifiedAiInsights() {
   const [insights, setInsights] = useState<UnifiedDashboardOutput | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchInsights() {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setInsights(mockInsights);
+        const result = await getUnifiedDashboardInsights({
+          menuData: JSON.stringify(menuItems),
+          inventoryData: JSON.stringify(inventoryDataForAlerts.inventoryItems),
+        });
+        setInsights(result);
       } catch (e: any) {
-        console.error("Failed to load insights:", e);
-        setError("Failed to load insights. Please try again later.");
+        console.error("Failed to load live AI insights, falling back to mock data:", e);
+        // Fallback to mock data on error
+        setInsights(mockInsights);
       } finally {
         setIsLoading(false);
       }
@@ -111,18 +113,14 @@ export function UnifiedAiInsights() {
     return <InsightsSkeleton />;
   }
   
-  if (error) {
+  if (!insights) {
      return (
-        <div className="text-center text-destructive bg-destructive/10 p-8 rounded-lg">
-            <TriangleAlert className="h-10 w-10 mx-auto mb-4" />
-            <p className="font-semibold">{error}</p>
-            <p className="text-sm text-destructive/80">Please check the console for more details or try again later.</p>
+        <div className="text-center text-muted-foreground bg-secondary/30 p-8 rounded-lg">
+            <TriangleAlert className="h-10 w-10 mx-auto mb-4 text-primary" />
+            <p className="font-semibold">Could not load AI insights.</p>
+            <p className="text-sm">There was an issue fetching data. Please try again later.</p>
         </div>
      )
-  }
-
-  if (!insights) {
-    return null;
   }
 
   const { menuSuggestions, inventoryAlerts, topMenuItems } = insights;
