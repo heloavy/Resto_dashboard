@@ -1,3 +1,35 @@
+
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "cappuccino",
+      "description": "A warm cappuccino in a ceramic cup.",
+      "imageUrl": "https://picsum.photos/seed/101/200/200",
+      "imageHint": "cappuccino coffee"
+    },
+    {
+      "id": "croissant",
+      "description": "A flaky, buttery croissant on a plate.",
+      "imageUrl": "https://picsum.photos/seed/102/200/200",
+      "imageHint": "croissant pastry"
+    },
+    {
+      "id": "avocado-toast",
+      "description": "Avocado toast with a poached egg on top.",
+      "imageUrl": "https://picsum.photos/seed/103/200/200",
+      "imageHint": "avocado toast"
+    },
+    {
+      "id": "cheeseburger",
+      "description": "A juicy cheeseburger with fries.",
+      "imageUrl": "https://picsum.photos/seed/104/200/200",
+      "imageHint": "cheeseburger fries"
+    },
+    {
+      "id": "margherita-pizza",
+      "description": "A classic Margherita pizza with fresh basil.",
+      "imageUrl": "https://picsum.photos/seed/105/200/200",
+      "imageHint": "margherita pizza"
+    }
+  ]
 }
