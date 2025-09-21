@@ -1,7 +1,7 @@
-import { SalesChart } from '@/components/dashboard/SalesChart';
 import { AiChat } from '@/components/dashboard/AiChat';
 import { InventoryAlerts } from '@/components/dashboard/InventoryAlerts';
 import { MenuOptimization } from '@/components/dashboard/MenuOptimization';
+import { SalesChartLoader } from '@/components/dashboard/SalesChartLoader';
 import { TopMenuItems } from '@/components/dashboard/TopMenuItems';
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         
         <div className="md:col-span-2 xl:col-span-2">
-          <SalesChart />
+          <SalesChartLoader />
         </div>
 
         <div className="xl:row-span-2">
