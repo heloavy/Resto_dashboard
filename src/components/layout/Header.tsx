@@ -20,7 +20,7 @@ export function Header() {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <UtensilsCrossed className="h-7 w-7 text-primary" />
-            <h1 className="text-xl font-headline font-bold text-gray-800">
+            <h1 className="text-xl font-headline font-bold">
               SmartServe AI
             </h1>
           </div>
