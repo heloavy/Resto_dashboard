@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
-import { UnifiedAiInsights } from './UnifiedAiInsights';
 
 function InsightsSkeleton() {
   return (
@@ -14,16 +13,10 @@ function InsightsSkeleton() {
   );
 }
 
-export function UnifiedAiInsightsLoader() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return <InsightsSkeleton />;
-  }
-
-  return <UnifiedAiInsights />;
-}
+export const UnifiedAiInsightsLoader = dynamic(
+    () => import('./UnifiedAiInsights').then(mod => mod.UnifiedAiInsights), 
+    {
+        ssr: false,
+        loading: () => <InsightsSkeleton />
+    }
+);
