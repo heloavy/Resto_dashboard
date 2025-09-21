@@ -1,8 +1,6 @@
 import { AiChat } from '@/components/dashboard/AiChat';
-import { InventoryAlertsLoader } from '@/components/dashboard/InventoryAlertsLoader';
-import { MenuOptimizationLoader } from '@/components/dashboard/MenuOptimizationLoader';
 import { SalesChartLoader } from '@/components/dashboard/SalesChartLoader';
-import { TopMenuItemsLoader } from '@/components/dashboard/TopMenuItemsLoader';
+import { UnifiedAiInsightsLoader } from '@/components/dashboard/UnifiedAiInsightsLoader';
 
 export default function Home() {
   return (
@@ -25,16 +23,8 @@ export default function Home() {
           <AiChat />
         </div>
         
-        <div className="md:col-span-1 xl:col-span-1">
-          <InventoryAlertsLoader />
-        </div>
-
-        <div className="md:col-span-1 xl:col-span-1">
-          <TopMenuItemsLoader />
-        </div>
-        
         <div className="md:col-span-2 xl:col-span-3">
-          <MenuOptimizationLoader />
+           <UnifiedAiInsightsLoader />
         </div>
       </div>
     </div>
