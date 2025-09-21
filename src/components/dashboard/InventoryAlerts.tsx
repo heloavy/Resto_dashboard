@@ -8,9 +8,9 @@ export async function InventoryAlerts() {
   const { alerts } = await generateInventoryAlert(inventoryDataForAlerts);
 
   return (
-    <Card>
+    <Card className="bg-card/50 border-0 shadow-lg">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 font-headline tracking-tight">
           <TriangleAlert className="text-destructive h-5 w-5" />
           Inventory Alerts
         </CardTitle>
@@ -20,7 +20,7 @@ export async function InventoryAlerts() {
         {alerts.length > 0 ? (
           <div className="space-y-4">
             {alerts.map((alert) => (
-              <div key={alert.itemName} className="p-3 bg-secondary rounded-lg">
+              <div key={alert.itemName} className="p-4 bg-secondary/50 rounded-lg transition-all hover:bg-secondary/80">
                 <div className="flex justify-between items-start">
                   <div>
                     <h3 className="font-semibold">{alert.itemName}</h3>
@@ -28,14 +28,14 @@ export async function InventoryAlerts() {
                       <span className="font-medium text-destructive">{alert.currentStock} {alert.unit}</span> left
                     </p>
                   </div>
-                  <Badge variant="destructive">Low Stock</Badge>
+                  <Badge variant="destructive" className="shadow-md">Low Stock</Badge>
                 </div>
-                <div className="mt-2 text-sm space-y-1">
-                  <div className="flex items-center gap-2">
-                    <ShoppingCart className="h-4 w-4 text-primary" />
-                    <span>Suggested Reorder: <strong className="font-semibold">{alert.reorderQuantity} {alert.unit}</strong></span>
+                <div className="mt-3 text-sm space-y-2">
+                  <div className="flex items-center gap-2 text-primary">
+                    <ShoppingCart className="h-4 w-4" />
+                    <span>Suggested Reorder: <strong className="font-semibold text-foreground/90">{alert.reorderQuantity} {alert.unit}</strong></span>
                   </div>
-                  <p className="text-xs text-muted-foreground italic pt-1">
+                  <p className="text-xs text-muted-foreground italic pt-1 border-t border-border pt-2">
                     {alert.reason}
                   </p>
                 </div>
@@ -44,8 +44,8 @@ export async function InventoryAlerts() {
           </div>
         ) : (
           <div className="text-center text-muted-foreground py-8">
-            <Package className="h-10 w-10 mx-auto mb-2" />
-            <p>Inventory levels look good!</p>
+            <Package className="h-10 w-10 mx-auto mb-2 text-primary" />
+            <p className="font-semibold">Inventory levels look good!</p>
             <p className="text-xs">No alerts to show right now.</p>
           </div>
         )}

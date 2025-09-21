@@ -15,18 +15,18 @@ import { UtensilsCrossed, Settings, LogOut } from "lucide-react";
 
 export function Header() {
   return (
-    <header className="bg-card border-b sticky top-0 z-10">
+    <header className="bg-transparent border-b border-white/10 sticky top-0 z-10 backdrop-blur-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <UtensilsCrossed className="h-7 w-7 text-primary" />
-            <h1 className="text-xl font-headline font-bold">
+            <h1 className="text-xl font-headline font-bold tracking-tighter">
               SmartServe AI
             </h1>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar className="cursor-pointer h-9 w-9">
+              <Avatar className="cursor-pointer h-9 w-9 ring-2 ring-offset-2 ring-offset-background ring-primary/50">
                 <AvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Manager" />
                 <AvatarFallback>M</AvatarFallback>
               </Avatar>

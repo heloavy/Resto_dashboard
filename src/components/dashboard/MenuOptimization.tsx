@@ -31,9 +31,9 @@ export async function MenuOptimization() {
   });
 
   return (
-    <Card>
+    <Card className="bg-card/50 border-0 shadow-lg">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 font-headline tracking-tight">
           <Lightbulb className="text-primary h-5 w-5" />
           AI Menu Optimization
         </CardTitle>
@@ -46,7 +46,7 @@ export async function MenuOptimization() {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
+                <TableRow className="hover:bg-transparent border-b-secondary/80">
                   <TableHead className="w-[200px]">Menu Item</TableHead>
                   <TableHead className="w-[200px]">Suggestion</TableHead>
                   <TableHead>Details</TableHead>
@@ -54,14 +54,14 @@ export async function MenuOptimization() {
               </TableHeader>
               <TableBody>
                 {suggestions.map((suggestion, index) => (
-                  <TableRow key={index}>
+                  <TableRow key={index} className="border-b-secondary/50 hover:bg-secondary/40">
                     <TableCell className="font-medium">{suggestion.item}</TableCell>
                     <TableCell>
-                      <Badge variant={getSuggestionBadgeVariant(suggestion.suggestionType)} className="capitalize">
+                      <Badge variant={getSuggestionBadgeVariant(suggestion.suggestionType)} className="capitalize shadow-md">
                         {suggestion.suggestionType.replace('_', ' ')}
                       </Badge>
                     </TableCell>
-                    <TableCell>{suggestion.details}</TableCell>
+                    <TableCell className="text-muted-foreground">{suggestion.details}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -69,7 +69,9 @@ export async function MenuOptimization() {
           </div>
         ) : (
            <div className="text-center text-muted-foreground py-8">
-            <p>No optimization suggestions at the moment.</p>
+            <Lightbulb className="h-10 w-10 mx-auto mb-2 text-primary" />
+            <p className="font-semibold">No optimization suggestions.</p>
+            <p className="text-xs">Your menu is performing well!</p>
           </div>
         )}
       </CardContent>
